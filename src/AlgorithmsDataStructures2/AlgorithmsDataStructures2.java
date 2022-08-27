@@ -1,4 +1,4 @@
-import java.util.Arrays;
+import java.util.*;
 
 public class AlgorithmsDataStructures2 {
     public static int[] GenerateBBSTArray(int[] a) {
