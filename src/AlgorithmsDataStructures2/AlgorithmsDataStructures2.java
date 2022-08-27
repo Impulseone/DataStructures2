@@ -1,3 +1,5 @@
+package AlgorithmsDataStructures2;
+
 import java.util.*;
 
 public class AlgorithmsDataStructures2 {

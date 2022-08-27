@@ -16,4 +16,18 @@ public class AlgorithmsDataStructures2Test {
         assertEquals(4, resultArray[5]);
         assertEquals(0, resultArray[6]);
     }
+
+    @Test
+    public void testGenerateBBSTArray2() {
+        int[] resultArray = AlgorithmsDataStructures2.GenerateBBSTArray(new int[]{1, 2, 3});
+        assertEquals(2, resultArray[0]);
+        assertEquals(1, resultArray[1]);
+        assertEquals(3, resultArray[2]);
+    }
+
+    @Test
+    public void testGenerateBBSTArray3() {
+        int[] resultArray = AlgorithmsDataStructures2.GenerateBBSTArray(new int[0]);
+        assertEquals(0, resultArray.length);
+    }
 }
