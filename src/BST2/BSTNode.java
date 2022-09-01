@@ -1,3 +1,5 @@
+package BST2;
+
 import java.util.*;
 
 class BSTNode {
