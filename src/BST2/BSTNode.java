@@ -54,11 +54,15 @@ class BalancedBST {
                 queue.add(tempNode.RightChild);
             }
         }
-        return calculateLevel(root_node.LeftChild, 0) - calculateLevel(root_node.RightChild, 0) < 2;
+        int levelL = calculateLevel(root_node.LeftChild);
+        int levelR = calculateLevel(root_node.RightChild);
+        int k = levelR - levelL;
+        return k < 2 && k > -2;
     }
 
-    private int calculateLevel(BSTNode root_node, int currentLevel) {
-        if (root_node == null) return currentLevel;
+    private int calculateLevel(BSTNode root_node) {
+        if (root_node == null) return 0;
+        int currentLevel = root_node.Level;
         LinkedList<BSTNode> queue = new LinkedList<>();
         queue.add(root_node);
         while (queue.size() > 0) {
