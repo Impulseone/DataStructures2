@@ -8,7 +8,8 @@ class Heap {
     }
 
     public void MakeHeap(int[] a, int depth) {
-        HeapArray = new int[depth];
+        int length = (int) (Math.pow(2, depth + 1) - 1);
+        HeapArray = new int[length];
         for (int key : a) {
             Add(key);
         }

@@ -44,7 +44,7 @@ public class HeapTest {
     public void AddTest() {
         Heap heap = new Heap();
         heap.MakeHeap(new int[]{1, 4, 3, 2}, 4);
-        assertFalse(heap.Add(333));
+        assertTrue(heap.Add(333));
     }
 
     @Test
