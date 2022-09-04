@@ -1,4 +1,4 @@
-package AlgorithmsDataStructures2;
+package GenerateBBSTArray;
 
 import org.junit.Test;
 

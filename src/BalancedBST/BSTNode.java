@@ -1,4 +1,4 @@
-package BST2;
+package BalancedBST;
 
 import java.util.*;
 
