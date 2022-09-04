@@ -22,7 +22,7 @@ class Heap {
         int lastExistElementIndex = findLastExistElementIndex();
         int lastExistElement = HeapArray[lastExistElementIndex];
         HeapArray[0] = lastExistElement;
-//        HeapArray[lastExistElementIndex] = 0;
+        HeapArray[lastExistElementIndex] = 0;
         changeDown(0);
         return maxElement;
     }
