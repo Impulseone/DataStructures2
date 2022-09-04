@@ -22,7 +22,7 @@ class Heap {
         int lastExistElementIndex = findLastExistElementIndex();
         int lastExistElement = HeapArray[lastExistElementIndex];
         HeapArray[0] = lastExistElement;
-        HeapArray[lastExistElementIndex] = 0;
+//        HeapArray[lastExistElementIndex] = 0;
         changeDown(0);
         return maxElement;
     }
@@ -40,11 +40,17 @@ class Heap {
             HeapArray[0] = key;
             return true;
         }
-        int index = HeapIsFilled();
-        if (index == -1)
-            return false;
-        HeapArray[index] = key;
-        changeUp(index);
+        if (checkHeapIsFilled()) return false;
+        int firstFreeSlotIndex = findLastExistElementIndex() + 1;
+        HeapArray[firstFreeSlotIndex] = key;
+        changeUp(firstFreeSlotIndex);
+        return true;
+    }
+
+    private boolean checkHeapIsFilled(){
+        for (int element : HeapArray) {
+            if (element == 0) return false;
+        }
         return true;
     }
 
@@ -71,22 +77,19 @@ class Heap {
     }
 
     private void changeUp(int currentIndex) {
-        int parentIndex = currentIndex / 2;
-        if (HeapArray[parentIndex] > HeapArray[currentIndex] || currentIndex == 0) {
+        int parentIndex;
+        if (currentIndex % 2 == 0) {
+            parentIndex = currentIndex / 2 - 1;
+        } else {
+            parentIndex = currentIndex / 2;
+        }
+        if (currentIndex == 0 || HeapArray[parentIndex] > HeapArray[currentIndex]) {
             return;
         }
         int temp = HeapArray[parentIndex];
         HeapArray[parentIndex] = HeapArray[currentIndex];
         HeapArray[currentIndex] = temp;
         changeUp(parentIndex);
-    }
-
-    private int HeapIsFilled() {
-        if (HeapArray[HeapArray.length - 1] != 0) return HeapArray.length - 1;
-        for (int i = HeapArray.length - 1; i >= 0; i--) {
-            if (HeapArray[i] == 0 && HeapArray[i - 1] != 0) return i;
-        }
-        return -1;
     }
 
 }
