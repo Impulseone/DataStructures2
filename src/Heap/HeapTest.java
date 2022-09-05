@@ -97,9 +97,27 @@ public class HeapTest {
     @Test
     public void getMaxTest4() {
         Heap heap = new Heap();
-        heap.MakeHeap(new int[]{1, 4, 2, 5, 8}, 6);
+        heap.MakeHeap(new int[]{3, 4, 5, 8, 11}, 2);
         int max = heap.GetMax();
-        assertEquals(8, max);
+        assertEquals(11, max);
+    }
+
+    @Test
+    public void getMaxTest5() {
+        Heap heap = new Heap();
+        heap.MakeHeap(new int[]{1}, 1);
+        int max = heap.GetMax();
+        assertEquals(1, max);
+        assertEquals(0, heap.HeapArray[0]);
+    }
+
+    @Test
+    public void getMaxTest6() {
+        Heap heap = new Heap();
+        heap.MakeHeap(new int[]{11, 9, 4, 7, 8, 3, 1, 2, 5, 6}, 3);
+        int max = heap.GetMax();
+        assertEquals(11, max);
+        assertEquals(9, heap.HeapArray[0]);
     }
 
 }

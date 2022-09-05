@@ -47,7 +47,7 @@ class Heap {
         return true;
     }
 
-    private boolean checkHeapIsFilled(){
+    private boolean checkHeapIsFilled() {
         for (int element : HeapArray) {
             if (element == 0) return false;
         }
@@ -62,12 +62,16 @@ class Heap {
         if (HeapArray[leftChildIndex] < HeapArray[currentIndex] && HeapArray[rightChildIndex] < HeapArray[currentIndex]) {
             return;
         }
-        if (HeapArray[leftChildIndex] > HeapArray[currentIndex]) {
+        int leftChild = HeapArray[leftChildIndex];
+        int rightChild = HeapArray[rightChildIndex];
+        int currentElement = HeapArray[currentIndex];
+
+        if (leftChild > currentElement && leftChild > rightChild) {
             int temp = HeapArray[leftChildIndex];
             HeapArray[leftChildIndex] = HeapArray[currentIndex];
             HeapArray[currentIndex] = temp;
             changeDown(leftChildIndex);
-        } else if (HeapArray[rightChildIndex] > HeapArray[currentIndex]) {
+        } else if (rightChild > currentElement && rightChild > leftChild) {
             int temp = HeapArray[rightChildIndex];
             HeapArray[rightChildIndex] = HeapArray[currentIndex];
             HeapArray[currentIndex] = temp;
