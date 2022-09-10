@@ -2,11 +2,11 @@ import java.util.*;
 
 class Vertex {
     public int Value;
-    public boolean hit;
+    public boolean Hit;
 
     public Vertex(int val) {
         Value = val;
-        hit = false;
+        Hit = false;
     }
 }
 
@@ -66,13 +66,13 @@ class SimpleGraph {
     public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
         Stack<Vertex> stack = new Stack<>();
         for (Vertex vertex1 : vertex) {
-            vertex1.hit = false;
+            vertex1.Hit = false;
         }
         return depthFirstSearch(VFrom, VTo, stack);
     }
 
     private ArrayList<Vertex> depthFirstSearch(int currentIndex, int VTo, Stack<Vertex> stack) {
-        vertex[currentIndex].hit = true;
+        vertex[currentIndex].Hit = true;
         if (!stack.contains(vertex[currentIndex])) {
             stack.push(vertex[currentIndex]);
         }
@@ -105,14 +105,14 @@ class SimpleGraph {
     private ArrayList<Vertex> findNotHitAdjacents(ArrayList<Vertex> adjacents) {
         ArrayList<Vertex> notHitAdjacents = new ArrayList<>();
         for (Vertex adjacent : adjacents) {
-            if (!adjacent.hit) notHitAdjacents.add(adjacent);
+            if (!adjacent.Hit) notHitAdjacents.add(adjacent);
         }
         return notHitAdjacents;
     }
 
     private Vertex findNotHitAdjacent(ArrayList<Vertex> adjacents) {
         for (Vertex adjacent : adjacents) {
-            if (!adjacent.hit) return adjacent;
+            if (!adjacent.Hit) return adjacent;
         }
         return null;
     }
