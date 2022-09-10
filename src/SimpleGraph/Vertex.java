@@ -1,3 +1,5 @@
+package SimpleGraph;
+
 import java.util.*;
 
 class Vertex {
