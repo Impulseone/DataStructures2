@@ -1,12 +1,12 @@
-package SimpleGraph;
-
 import java.util.*;
 
 class Vertex {
     public int Value;
+    public boolean hit;
 
     public Vertex(int val) {
         Value = val;
+        hit = false;
     }
 }
 
@@ -61,5 +61,66 @@ class SimpleGraph {
     public void RemoveEdge(int v1, int v2) {
         m_adjacency[v1][v2] = 0;
         m_adjacency[v2][v1] = 0;
+    }
+
+    public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo) {
+        Stack<Vertex> stack = new Stack<>();
+        for (Vertex vertex1 : vertex) {
+            vertex1.hit = false;
+        }
+        return depthFirstSearch(VFrom, VTo, stack);
+    }
+
+    private ArrayList<Vertex> depthFirstSearch(int currentIndex, int VTo, Stack<Vertex> stack) {
+        vertex[currentIndex].hit = true;
+        if (!stack.contains(vertex[currentIndex])) {
+            stack.push(vertex[currentIndex]);
+        }
+        ArrayList<Vertex> adjacents = findAdjacents(currentIndex);
+        if (adjacents.contains(vertex[VTo])) {
+            stack.push(vertex[VTo]);
+            return new ArrayList<>(stack);
+        }
+        Vertex notHitVertex = findNotHitAdjacent(adjacents);
+        if (notHitVertex != null) {
+            int index = getIndexOfVertex(notHitVertex);
+            return depthFirstSearch(index, VTo, stack);
+        }
+
+        stack.pop();
+        if (stack.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return depthFirstSearch(getIndexOfVertex(stack.get(0)), VTo, stack);
+    }
+
+    private ArrayList<Vertex> findAdjacents(int index) {
+        ArrayList<Vertex> adjacents = new ArrayList<>();
+        for (int i = 0; i < max_vertex; i++) {
+            if (m_adjacency[index][i] == 1) adjacents.add(vertex[i]);
+        }
+        return adjacents;
+    }
+
+    private ArrayList<Vertex> findNotHitAdjacents(ArrayList<Vertex> adjacents) {
+        ArrayList<Vertex> notHitAdjacents = new ArrayList<>();
+        for (Vertex adjacent : adjacents) {
+            if (!adjacent.hit) notHitAdjacents.add(adjacent);
+        }
+        return notHitAdjacents;
+    }
+
+    private Vertex findNotHitAdjacent(ArrayList<Vertex> adjacents) {
+        for (Vertex adjacent : adjacents) {
+            if (!adjacent.hit) return adjacent;
+        }
+        return null;
+    }
+
+    private int getIndexOfVertex(Vertex vertex1) {
+        for (int i = 0; i < max_vertex; i++) {
+            if (vertex[i].equals(vertex1)) return i;
+        }
+        return -1;
     }
 }
