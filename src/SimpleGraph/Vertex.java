@@ -22,9 +22,6 @@ class SimpleGraph {
     }
 
     public void AddVertex(int value) {
-        // ваш код добавления новой вершины
-        // с значением value
-        // в незанятую позицию vertex
         Vertex vertex1 = new Vertex(value);
         for (int i = 0; i < vertex.length; i++) {
             if (vertex[i] == null) {
@@ -34,8 +31,6 @@ class SimpleGraph {
         }
     }
 
-    // здесь и далее, параметры v -- индекс вершины
-    // в списке vertex
     public void RemoveVertex(int v) {
         vertex[v] = null;
         m_adjacency[v][v] = 0;
@@ -102,14 +97,6 @@ class SimpleGraph {
         return adjacents;
     }
 
-    private ArrayList<Vertex> findNotHitAdjacents(ArrayList<Vertex> adjacents) {
-        ArrayList<Vertex> notHitAdjacents = new ArrayList<>();
-        for (Vertex adjacent : adjacents) {
-            if (!adjacent.Hit) notHitAdjacents.add(adjacent);
-        }
-        return notHitAdjacents;
-    }
-
     private Vertex findNotHitAdjacent(ArrayList<Vertex> adjacents) {
         for (Vertex adjacent : adjacents) {
             if (!adjacent.Hit) return adjacent;
@@ -123,4 +110,62 @@ class SimpleGraph {
         }
         return -1;
     }
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo) {
+        Queue<Vertex> queue = new Queue<Vertex>();
+        for (Vertex vertex1 : vertex) {
+            vertex1.Hit = false;
+        }
+        return breadthFirstSearch(VFrom, VTo, queue, new ArrayList<>());
+    }
+
+    private ArrayList<Vertex> breadthFirstSearch(int currentIndex, int VTo, Queue<Vertex> queue, ArrayList<Vertex> path) {
+        if (!path.contains(vertex[currentIndex])) path.add(vertex[currentIndex]);
+        vertex[currentIndex].Hit = true;
+        ArrayList<Vertex> adjacents = findAdjacents(currentIndex);
+        Vertex notHitVertex = findNotHitAdjacent(adjacents);
+        if (notHitVertex != null && notHitVertex.equals(vertex[VTo])) {
+            path.add(notHitVertex);
+            return new ArrayList<>(path);
+        }
+        if (notHitVertex == null) {
+            if (queue.size() == 0) {
+                path.clear();
+                return new ArrayList<>();
+            } else {
+                Vertex lastVertexInQueue = queue.dequeue();
+                int index = getIndexOfVertex(lastVertexInQueue);
+                path.add(lastVertexInQueue);
+                return breadthFirstSearch(index, VTo, queue, path);
+            }
+        }
+        notHitVertex.Hit = true;
+        queue.enqueue(notHitVertex);
+        return breadthFirstSearch(currentIndex, VTo, queue, path);
+    }
+}
+
+class Queue<T> {
+
+    private final ArrayList<T> elements;
+
+    public Queue() {
+        elements = new ArrayList<>();
+    }
+
+    public void enqueue(T item) {
+        elements.add(0, item);
+    }
+
+    public T dequeue() {
+        if (size() == 0) return null;
+        T element = elements.get(elements.size() - 1);
+        elements.remove(element);
+        return element;
+    }
+
+    public int size() {
+        return elements.size();
+    }
+
 }
