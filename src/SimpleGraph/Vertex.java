@@ -1,3 +1,5 @@
+package SimpleGraph;
+
 import java.util.*;
 
 class Vertex {
@@ -128,20 +130,19 @@ class SimpleGraph {
             path.add(notHitVertex);
             return new ArrayList<>(path);
         }
-        if (notHitVertex == null) {
-            if (queue.size() == 0) {
-                path.clear();
-                return new ArrayList<>();
-            } else {
-                Vertex lastVertexInQueue = queue.dequeue();
-                int index = getIndexOfVertex(lastVertexInQueue);
-                path.add(lastVertexInQueue);
-                return breadthFirstSearch(index, VTo, queue, path);
-            }
+        if (notHitVertex != null && !notHitVertex.equals(vertex[VTo])) {
+            notHitVertex.Hit = true;
+            queue.enqueue(notHitVertex);
+            return breadthFirstSearch(currentIndex, VTo, queue, path);
         }
-        notHitVertex.Hit = true;
-        queue.enqueue(notHitVertex);
-        return breadthFirstSearch(currentIndex, VTo, queue, path);
+        if (queue.size() == 0) {
+            path.clear();
+            return new ArrayList<>();
+        }
+        Vertex lastVertexInQueue = queue.dequeue();
+        int index = getIndexOfVertex(lastVertexInQueue);
+        path.add(lastVertexInQueue);
+        return breadthFirstSearch(index, VTo, queue, path);
     }
 }
 
