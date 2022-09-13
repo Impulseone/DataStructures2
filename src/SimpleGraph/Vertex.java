@@ -1,5 +1,3 @@
-package SimpleGraph;
-
 import java.util.*;
 import java.util.function.Predicate;
 
