@@ -131,20 +131,19 @@ class SimpleGraph {
             vertex[currentIndex].Parent = vertex[parentIndex];
         ArrayList<Vertex> adjacents = findAdjacents(currentIndex);
         Vertex notHitVertex = findNotHitAdjacent(adjacents);
-        if (notHitVertex != null) {
-            notHitVertex.Parent = vertex[currentIndex];
-            if (notHitVertex.equals(vertex[VTo])) {
-                ArrayList<Vertex> path = createListFromParents(notHitVertex);
-                path.add(notHitVertex);
-                return path;
-            }
-            notHitVertex.Hit = true;
-            queue.enqueue(notHitVertex);
-        } else if (queue.size() == 0) {
+        if (notHitVertex == null && queue.size() == 0) {
             return new ArrayList<>();
-        } else {
+        } else if (notHitVertex == null) {
             parentIndex = currentIndex;
             currentIndex = findIndexOfVertex(queue.dequeue());
+        } else if (notHitVertex.equals(vertex[VTo])) {
+            notHitVertex.Parent = vertex[currentIndex];
+            ArrayList<Vertex> path = createListFromParents(notHitVertex);
+            path.add(notHitVertex);
+            return path;
+        } else {
+            notHitVertex.Hit = true;
+            queue.enqueue(notHitVertex);
         }
         return breadthFirstSearch(parentIndex, currentIndex, VTo, queue);
     }
