@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.function.Predicate;
 
 class Vertex {
     public int Value;
