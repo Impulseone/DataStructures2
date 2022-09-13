@@ -113,4 +113,32 @@ public class SimpleGraphTest {
         assertEquals(40, result2.get(3).Value);
         assertEquals(0, result3.size());
     }
+
+    @Test
+    public void breadthFirstSearchTest2() {
+        SimpleGraph simpleGraph = new SimpleGraph(5);
+        simpleGraph.AddVertex(10);
+        simpleGraph.AddVertex(20);
+        simpleGraph.AddVertex(30);
+        simpleGraph.AddVertex(40);
+        simpleGraph.AddVertex(50);
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(0, 2);
+        simpleGraph.AddEdge(0, 3);
+        simpleGraph.AddEdge(1, 3);
+        simpleGraph.AddEdge(1, 4);
+        simpleGraph.AddEdge(2, 3);
+        simpleGraph.AddEdge(3, 4);
+        ArrayList<Vertex> result = simpleGraph.BreadthFirstSearch(0, 4);
+        ArrayList<Vertex> result2 = simpleGraph.BreadthFirstSearch(0, 3);
+        ArrayList<Vertex> result3 = simpleGraph.BreadthFirstSearch(4, 2);
+        assertEquals(3, result.size());
+        assertEquals(10, result.get(0).Value);
+        assertEquals(20, result.get(1).Value);
+        assertEquals(50, result.get(2).Value);
+        assertEquals(2, result2.size());
+        assertEquals(10, result2.get(0).Value);
+        assertEquals(40, result2.get(1).Value);
+        assertEquals(3, result3.size());
+    }
 }

@@ -1,12 +1,17 @@
+package SimpleGraph;
+
 import java.util.*;
+import java.util.function.Predicate;
 
 class Vertex {
     public int Value;
     public boolean Hit;
+    public Vertex Parent;
 
     public Vertex(int val) {
         Value = val;
         Hit = false;
+        Parent = null;
     }
 }
 
@@ -78,7 +83,7 @@ class SimpleGraph {
         }
         Vertex notHitVertex = findNotHitAdjacent(adjacents);
         if (notHitVertex != null) {
-            int index = getIndexOfVertex(notHitVertex);
+            int index = findIndexOfVertex(notHitVertex);
             return depthFirstSearch(index, VTo, stack);
         }
 
@@ -86,7 +91,7 @@ class SimpleGraph {
         if (stack.isEmpty()) {
             return new ArrayList<>();
         }
-        return depthFirstSearch(getIndexOfVertex(stack.get(0)), VTo, stack);
+        return depthFirstSearch(findIndexOfVertex(stack.get(0)), VTo, stack);
     }
 
     private ArrayList<Vertex> findAdjacents(int index) {
@@ -104,7 +109,7 @@ class SimpleGraph {
         return null;
     }
 
-    private int getIndexOfVertex(Vertex vertex1) {
+    private int findIndexOfVertex(Vertex vertex1) {
         for (int i = 0; i < max_vertex; i++) {
             if (vertex[i].equals(vertex1)) return i;
         }
@@ -116,31 +121,42 @@ class SimpleGraph {
         for (Vertex vertex1 : vertex) {
             vertex1.Hit = false;
         }
-        return breadthFirstSearch(VFrom, VTo, queue, new ArrayList<>());
+        vertex[VFrom].Hit = true;
+        vertex[VFrom].Parent = null;
+        return breadthFirstSearch(null, VFrom, VTo, queue);
     }
 
-    private ArrayList<Vertex> breadthFirstSearch(int currentIndex, int VTo, Queue<Vertex> queue, ArrayList<Vertex> path) {
-        if (!path.contains(vertex[currentIndex])) path.add(vertex[currentIndex]);
-        vertex[currentIndex].Hit = true;
+    private ArrayList<Vertex> breadthFirstSearch(Integer parentIndex, int currentIndex, int VTo, Queue<Vertex> queue) {
+        if (parentIndex != null && vertex[currentIndex].Parent == null)
+            vertex[currentIndex].Parent = vertex[parentIndex];
         ArrayList<Vertex> adjacents = findAdjacents(currentIndex);
         Vertex notHitVertex = findNotHitAdjacent(adjacents);
-        if (notHitVertex != null && notHitVertex.equals(vertex[VTo])) {
-            path.add(notHitVertex);
-            return new ArrayList<>(path);
-        }
-        if (notHitVertex != null && !notHitVertex.equals(vertex[VTo])) {
+        if (notHitVertex != null) {
+            notHitVertex.Parent = vertex[currentIndex];
+            if (notHitVertex.equals(vertex[VTo])) {
+                ArrayList<Vertex> path = createListFromParents(notHitVertex);
+                path.add(notHitVertex);
+                return path;
+            }
             notHitVertex.Hit = true;
             queue.enqueue(notHitVertex);
-            return breadthFirstSearch(currentIndex, VTo, queue, path);
-        }
-        if (queue.size() == 0) {
-            path.clear();
+        } else if (queue.size() == 0) {
             return new ArrayList<>();
+        } else {
+            parentIndex = currentIndex;
+            currentIndex = findIndexOfVertex(queue.dequeue());
         }
-        Vertex lastVertexInQueue = queue.dequeue();
-        int index = getIndexOfVertex(lastVertexInQueue);
-        path.add(lastVertexInQueue);
-        return breadthFirstSearch(index, VTo, queue, path);
+        return breadthFirstSearch(parentIndex, currentIndex, VTo, queue);
+    }
+
+    private ArrayList<Vertex> createListFromParents(Vertex vertex) {
+        ArrayList<Vertex> vertexArrayList = new ArrayList<>();
+        while (vertex.Parent != null) {
+            vertexArrayList.add(vertex.Parent);
+            vertex = vertex.Parent;
+        }
+        Collections.reverse(vertexArrayList);
+        return vertexArrayList;
     }
 }
 
