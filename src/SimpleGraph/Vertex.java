@@ -1,3 +1,5 @@
+package SimpleGraph;
+
 import java.util.*;
 
 class Vertex {
@@ -130,7 +132,8 @@ class SimpleGraph {
         Vertex notHitVertex = findNotHitAdjacent(adjacents);
         if (notHitVertex == null && queue.size() == 0) {
             return new ArrayList<>();
-        } else if (notHitVertex == null) {
+        }
+        if (notHitVertex == null) {
             parentIndex = currentIndex;
             currentIndex = findIndexOfVertex(queue.dequeue());
         } else if (notHitVertex.equals(vertex[VTo])) {
@@ -138,10 +141,12 @@ class SimpleGraph {
             ArrayList<Vertex> path = createListFromParents(notHitVertex);
             path.add(notHitVertex);
             return path;
-        } else {
+        }
+        if (notHitVertex != null) {
             notHitVertex.Hit = true;
             queue.enqueue(notHitVertex);
         }
+
         return breadthFirstSearch(parentIndex, currentIndex, VTo, queue);
     }
 
@@ -152,6 +157,32 @@ class SimpleGraph {
             vertex = vertex.Parent;
         }
         Collections.reverse(vertexArrayList);
+        return vertexArrayList;
+    }
+
+    public ArrayList<Vertex> WeakVertices() {
+        ArrayList<Vertex> vertexArrayList = new ArrayList<>();
+        for (int i = 0; i < max_vertex; i++) {
+            ArrayList<Vertex> adjacents = findAdjacents(i);
+            if (adjacents.size() < 2) {
+                vertexArrayList.add(vertex[i]);
+                continue;
+            }
+            boolean hasAdjacent = false;
+            for (int i1 = 0; i1 < adjacents.size(); i1++) {
+                if (i1 == adjacents.size() - 1) break;
+                Vertex current = adjacents.get(i1);
+                Vertex next = adjacents.get(i1 + 1);
+                int currentIndexInMatrix = findIndexOfVertex(current);
+                int nextIndexInMatrix = findIndexOfVertex(next);
+                if (IsEdge(currentIndexInMatrix, nextIndexInMatrix)) {
+                    hasAdjacent = true;
+                    break;
+                }
+            }
+            if (!hasAdjacent)
+                vertexArrayList.add(vertex[i]);
+        }
         return vertexArrayList;
     }
 }

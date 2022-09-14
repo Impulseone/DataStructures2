@@ -141,4 +141,20 @@ public class SimpleGraphTest {
         assertEquals(40, result2.get(1).Value);
         assertEquals(3, result3.size());
     }
+
+    @Test
+    public void weakVerticesTest(){
+        SimpleGraph simpleGraph = new SimpleGraph(4);
+        simpleGraph.AddVertex(10);
+        simpleGraph.AddVertex(20);
+        simpleGraph.AddVertex(30);
+        simpleGraph.AddVertex(40);
+        simpleGraph.AddEdge(0, 1);
+        simpleGraph.AddEdge(0, 2);
+        simpleGraph.AddEdge(0, 3);
+        simpleGraph.AddEdge(1, 2);
+        ArrayList<Vertex> result = simpleGraph.WeakVertices();
+        assertEquals(1, result.size());
+        assertEquals(40, result.get(0).Value);
+    }
 }
