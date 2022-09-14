@@ -101,6 +101,14 @@ class SimpleGraph {
         return adjacents;
     }
 
+    private ArrayList<Integer> findAdjacentIndices(int index) {
+        ArrayList<Integer> adjacents = new ArrayList<>();
+        for (int i = 0; i < max_vertex; i++) {
+            if (m_adjacency[index][i] == 1) adjacents.add(i);
+        }
+        return adjacents;
+    }
+
     private Vertex findNotHitAdjacent(ArrayList<Vertex> adjacents) {
         for (Vertex adjacent : adjacents) {
             if (!adjacent.Hit) return adjacent;
@@ -163,27 +171,24 @@ class SimpleGraph {
     public ArrayList<Vertex> WeakVertices() {
         ArrayList<Vertex> vertexArrayList = new ArrayList<>();
         for (int i = 0; i < max_vertex; i++) {
-            ArrayList<Vertex> adjacents = findAdjacents(i);
-            if (adjacents.size() < 2) {
-                vertexArrayList.add(vertex[i]);
-                continue;
-            }
-            boolean hasAdjacent = false;
-            for (int i1 = 0; i1 < adjacents.size(); i1++) {
-                if (i1 == adjacents.size() - 1) break;
-                Vertex current = adjacents.get(i1);
-                Vertex next = adjacents.get(i1 + 1);
-                int currentIndexInMatrix = findIndexOfVertex(current);
-                int nextIndexInMatrix = findIndexOfVertex(next);
-                if (IsEdge(currentIndexInMatrix, nextIndexInMatrix)) {
-                    hasAdjacent = true;
-                    break;
-                }
-            }
-            if (!hasAdjacent)
+            if (!compareAdjacents(findAdjacentIndices(i)))
                 vertexArrayList.add(vertex[i]);
         }
         return vertexArrayList;
+    }
+
+    private boolean compareAdjacents(ArrayList<Integer> adjacents) {
+        if (adjacents.size() < 2) return false;
+        for (int i1 = 0; i1 < adjacents.size(); i1++) {
+            for (Integer adjacent : adjacents) {
+                int currentIndexInMatrix = adjacents.get(i1);
+                int nextIndexInMatrix = adjacent;
+                if (IsEdge(currentIndexInMatrix, nextIndexInMatrix)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
